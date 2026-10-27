@@ -1,0 +1,13 @@
+'use strict';
+const {spawnSync}=require('node:child_process'),fs=require('node:fs');
+const args=['-y','-v','error','-i','out/the-house-always-wins.mp4'];
+for(let i=0;i<8;i++)args.push('-i',`out/house-voice-${i}.wav`);
+const filters=['[0:a]volume=0.45[music]'];
+for(let i=0;i<8;i++)filters.push(`[${i+1}:a]aresample=48000,apad,atrim=duration=5.65,afade=t=out:st=5.5:d=0.15,adelay=${i*6000+200}:all=1[v${i}]`);
+filters.push('[music]'+Array.from({length:8},(_,i)=>`[v${i}]`).join('')+'amix=inputs=9:normalize=0,alimiter=limit=0.95[a]');
+args.push('-filter_complex',filters.join(';'),'-map','0:v','-map','[a]','-c:v','copy','-c:a','aac','-b:a','192k','-t','48','-movflags','+faststart','out/the-house-always-wins-social.mp4');
+const p=spawnSync('ffmpeg',args,{stdio:'inherit'});if(p.status)process.exit(p.status);
+const captions=[['Welcome to the casino.','A vision board with an ATM.'],['Your first bet is free.','So is the first bite on a fishhook.'],['Two cherries and a lemon!','That is almost retirement.'],['I won twenty bucks!','It only cost me eighty.'],['They called me a VIP.','Very Important Payment.'],['I am due a win.','The machine is due a yacht.'],['Please gamble responsibly.','Our yacht depends on it.'],['The house always wins.','Weird. I came here to afford one.']];
+const stamp=n=>`00:00:${String(n).padStart(2,'0')},000`;
+fs.writeFileSync('out/the-house-always-wins.srt',captions.map((c,i)=>`${i+1}\n${stamp(i*6)} --> ${stamp((i+1)*6)}\n${c.join('\n')}\n`).join('\n'));
+fs.writeFileSync('out/the-house-always-wins-script.md','# The House Always Wins\n\n48 seconds. 1080 x 1920. Original animated casino satire. Synthetic narration, original synthesized music, burned-in captions.\n\n'+captions.map((c,i)=>`**${i*6}-${(i+1)*6}s**\n\n${c.join(' ')}\n`).join('\n'));

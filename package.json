@@ -1,0 +1,21 @@
+{
+  "name": "vido",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Deterministic canvas films with isolated, validated local video capture",
+  "scripts": {
+    "serve": "node capture-server.js",
+    "record": "node cli.js record",
+    "still": "node cli.js still",
+    "sheet": "node cli.js sheet",
+    "audio": "node make-audio.js",
+    "srt": "node apocalypse/make-srt.js",
+    "test": "node --test tests/*.test.js",
+    "test:browser": "node tests/browser-check.js",
+    "check": "node scripts/check.js",
+    "demo": "node cli.js record --film nightshift --jobs 2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

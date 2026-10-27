@@ -1,0 +1,28 @@
+# Generated films, soundtracks, subtitles, frames, stills, and capture job data
+/out/
+
+# Node dependencies, caches, logs, and test coverage
+node_modules/
+.npm/
+coverage/
+.nyc_output/
+*.log
+*.tsbuildinfo
+
+# Local environment and secrets (keep example configuration trackable)
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Machine-specific tool settings
+/.claude/launch.json
+/.claude/settings.local.json
+
+# Editor scratch files and operating-system metadata
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
